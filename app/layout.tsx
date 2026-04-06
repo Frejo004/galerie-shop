@@ -60,41 +60,43 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${cormorant.variable} ${inter.variable}`}>
-      <body className="font-sans antialiased text-[#f5f5f5] bg-[#0a0a0a]">
+      <body className="font-sans antialiased">
         <Header />
         <main>{children}</main>
-        <footer className="mt-20 sm:mt-32 py-16 sm:py-20 border-t border-border/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row justify-between items-start gap-10 sm:gap-12">
-            <div className="space-y-6 max-w-sm">
-              <Link href="/" className="font-serif text-xl tracking-[0.1em] uppercase">GALERIE</Link>
-              <p className="text-muted-foreground text-sm leading-relaxed tracking-wide">
-                Une vision artistique contemporaine, mêlant émotion brute et raffinement cinématique.
+        <footer className="mt-20 sm:mt-32 border-t border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-20 flex flex-col md:flex-row justify-between items-start gap-12">
+            <div className="space-y-5 max-w-xs">
+              <Link href="/" className="font-serif text-2xl tracking-[0.08em] text-foreground">GALERIE</Link>
+              <div className="divider" />
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Une vision artistique contemporaine,<br />mêlant émotion brute et raffinement.
               </p>
             </div>
-            
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 sm:gap-12 text-xs uppercase tracking-widest">
-              <div className="flex flex-col gap-4">
-                <span className="text-white/50 mb-2">Explore</span>
-                <Link href="/galerie" className="hover:text-primary">Galerie</Link>
-                <Link href="/collections" className="hover:text-primary">Collections</Link>
-                <Link href="/blog" className="hover:text-primary">Journal</Link>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 sm:gap-16">
+              <div className="flex flex-col gap-3">
+                <span className="label-category mb-1">Explorer</span>
+                <Link href="/galerie" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Galerie</Link>
+                <Link href="/collections" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Collections</Link>
+                <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Journal</Link>
               </div>
-              <div className="flex flex-col gap-4">
-                <span className="text-white/50 mb-2">Contact</span>
-                <Link href="/contact" className="hover:text-primary">Inquiry</Link>
-                <Link href="/shipping" className="hover:text-primary">Livraison</Link>
-                <Link href="/legal" className="hover:text-primary">Légal</Link>
+              <div className="flex flex-col gap-3">
+                <span className="label-category mb-1">Contact</span>
+                <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Demande</Link>
+                <Link href="/shipping" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Livraison</Link>
+                <Link href="/legal" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Mentions légales</Link>
               </div>
-              <div className="flex flex-col gap-4">
-                <span className="text-white/50 mb-2">Social</span>
-                <a href="#" className="hover:text-primary">Instagram</a>
-                <a href="#" className="hover:text-primary">Vimeo</a>
+              <div className="flex flex-col gap-3">
+                <span className="label-category mb-1">Suivre</span>
+                <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Instagram</a>
+                <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Vimeo</a>
               </div>
             </div>
           </div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 mt-12 sm:mt-20 pt-8 border-t border-white/5 text-[10px] tracking-widest text-white/30 uppercase flex flex-col sm:flex-row justify-between gap-2">
-            <span>© 2024 GALERIE. TOUS DROITS RÉSERVÉS.</span>
-            <span>DESIGNED BY ANTIGRAVITY</span>
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-6 border-t border-border flex flex-col sm:flex-row justify-between gap-2 text-xs text-muted-foreground">
+            <span>© 2024 GALERIE. Tous droits réservés.</span>
+            <span>Designed by Antigravity</span>
           </div>
         </footer>
       </body>

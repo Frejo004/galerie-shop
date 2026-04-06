@@ -10,33 +10,28 @@ interface Props {
   artworks: any[]
 }
 
-const breakpointColumnsObj = {
-  default: 3,
-  1100: 2,
-  700: 1
-}
+const breakpointCols = { default: 3, 1024: 2, 640: 1 }
 
 export default function MasonryGrid({ artworks }: Props) {
   const { type, support, searchQuery } = useFilter()
 
-  const filteredArtworks = artworks?.filter((art) => {
+  const filtered = artworks?.filter((art) => {
     const matchType = type === 'all' || art.type === type
     const matchSupport = support === 'all' || art.support === support
-    const matchSearch = 
-      !searchQuery || 
+    const matchSearch =
+      !searchQuery ||
       art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       art.support.toLowerCase().includes(searchQuery.toLowerCase())
-    
     return matchType && matchSupport && matchSearch
   })
 
-  if (!filteredArtworks?.length) {
+  if (!filtered?.length) {
     return (
-      <div className="py-20 text-center text-white/30 text-xs uppercase tracking-widest min-h-[400px] flex flex-col items-center justify-center border border-white/5 bg-[#0a0a0a]">
-        <p>Aucune œuvre ne correspond à vos critères.</p>
-        <button 
+      <div className="py-24 text-center border border-border">
+        <p className="text-sm text-muted-foreground mb-4">Aucune œuvre ne correspond à vos critères.</p>
+        <button
           onClick={() => useFilter.getState().reset()}
-          className="mt-6 text-primary hover:text-white transition-colors"
+          className="text-xs underline underline-offset-4 text-muted-foreground hover:text-foreground transition-colors"
         >
           Réinitialiser les filtres
         </button>
@@ -46,46 +41,48 @@ export default function MasonryGrid({ artworks }: Props) {
 
   return (
     <ReactMasonry
-      breakpointCols={breakpointColumnsObj}
-      className="flex -ml-8 w-auto px-4 lg:px-0"
-      columnClassName="pl-8 bg-clip-padding"
+      breakpointCols={breakpointCols}
+      className="flex -ml-6 w-auto"
+      columnClassName="pl-6 bg-clip-padding"
     >
-      {filteredArtworks.map((art) => (
+      {filtered.map((art) => (
+        <div key={art._id} className="mb-6 group">
+          <Link href={`/artwork/${art.slug.current}`} className="block">
 
-        <div key={art._id} className="mb-8 group">
-          <Link href={`/artwork/${art.slug.current}`}>
-            <div className="relative aspect-[3/4] bg-[#0d0d0d] border border-white/5 overflow-hidden transition-all duration-700 ease-in-out group-hover:scale-[1.02]">
-              {art.images?.[0] ? (
-                <Image
-                  src={urlForImage(art.images[0]).url()}
-                  alt={art.title}
-                  fill
-                  className="object-cover transition-opacity duration-700 group-hover:opacity-80"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-[radial-gradient(circle_at_center,_rgba(209,176,107,0.05)_0%,_transparent_70%)]">
-                   <div className="text-[10px] tracking-[0.5em] text-primary/40 uppercase font-black opacity-20">GALERIE</div>
-                </div>
-              )}
+            <div className="artwork-card relative overflow-hidden bg-muted">
+              <div className="aspect-[3/4] relative">
+                {art.images?.[0] ? (
+                  <Image
+                    src={urlForImage(art.images[0]).url()}
+                    alt={art.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-muted">
+                    <span className="font-serif italic text-sm text-muted-foreground/40">
+                      {art.title}
+                    </span>
+                  </div>
+                )}
 
-              
-              {/* Overlay on hover */}
-              <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/80 to-transparent opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                <p className="text-[10px] tracking-[0.3em] text-primary uppercase mb-2">{art.type === 'original' ? 'Original' : 'Tirage D\'Art'}</p>
-                <h3 className="font-serif text-xl font-light text-white">{art.title}</h3>
+                {/* Overlay hover */}
+                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-500" />
               </div>
             </div>
-            
-            <div className="mt-6 flex justify-between items-start">
-              <div>
-                <h4 className="font-serif text-lg font-light group-hover:text-primary transition-colors">{art.title}</h4>
-                <p className="text-[10px] tracking-widest text-white/30 uppercase mt-1">
-                  {art.support} — {art.year}
+
+            <div className="mt-4 flex justify-between items-start">
+              <div className="space-y-1">
+                <h3 className="font-serif text-base font-light text-foreground group-hover:text-primary transition-colors">
+                  {art.title}
+                </h3>
+                <p className="text-xs text-muted-foreground tracking-wide">
+                  {art.support} · {art.year}
                 </p>
               </div>
-              <p className="font-sans text-xs tracking-widest text-white/50 uppercase">
-                {art.price} {art.currency}
+              <p className="text-sm text-muted-foreground shrink-0 ml-4">
+                {art.price?.toLocaleString('fr-FR')} {art.currency}
               </p>
             </div>
           </Link>
