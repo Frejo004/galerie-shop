@@ -1,55 +1,164 @@
-import Header from './components/Header';
-import Hero from './components/Hero';
-import FeaturedWorks from './components/FeaturedWorks';
-import Footer from './components/Footer';
+import Image from "next/image";
+import Link from "next/link";
+import { client } from "@/sanity/lib/client";
+import { groq } from "next-sanity";
+import { urlForImage } from "@/sanity/lib/image";
+import { projectId } from "@/sanity/env";
+import EditorialHero from "@/components/home/EditorialHero";
 
-export default function Home() {
+interface Artwork {
+  _id: string
+  title: string
+  slug: { current: string }
+  type: 'original' | 'derivative'
+  support: string
+  year: string
+  price: number
+  currency: string
+  images: any[]
+}
+
+const MOCK_ARTWORKS: Artwork[] = [
+  {
+    _id: 'mock1',
+    title: 'Éveil du Silence No. 1',
+    slug: { current: 'mock-1' },
+    type: 'original',
+    support: 'Huile sur Toile',
+    year: '2024',
+    price: 4200,
+    currency: '€',
+    images: [] // Placeholder handling in components
+  },
+  {
+    _id: 'mock2',
+    title: 'Texture Urbaine (Étude)',
+    slug: { current: 'mock-2' },
+    type: 'derivative',
+    support: 'Tirage Fine Art',
+    year: '2023',
+    price: 350,
+    currency: '€',
+    images: []
+  },
+  {
+    _id: 'mock3',
+    title: 'Fragment de Mémoire',
+    slug: { current: 'mock-3' },
+    type: 'original',
+    support: 'Technique Mixte',
+    year: '2024',
+    price: 2800,
+    currency: '€',
+    images: []
+  }
+]
+
+async function getFeaturedArtworks(): Promise<Artwork[]> {
+  if (projectId === 'dummy-project-id') {
+     return MOCK_ARTWORKS;
+  }
+  
+  try {
+    const data = await client.fetch(
+      groq`*[_type == "artwork" && inStock == true][0...3] | order(_createdAt desc) {
+        _id,
+        title,
+        slug,
+        type,
+        support,
+        price,
+        currency,
+        images
+      }`
+    );
+    return data?.length > 0 ? data : MOCK_ARTWORKS;
+  } catch (err) {
+    console.error("Sanity fetch error:", err);
+    return MOCK_ARTWORKS;
+  }
+}
+
+
+export default async function Home() {
+  const artworks = await getFeaturedArtworks();
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1">
-        <Hero />
-        <FeaturedWorks />
-        
-        {/* Section À propos */}
-        <section className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-                  L'Artiste
-                </h2>
-                <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                  Passionné par les couleurs et les émotions, je crée des œuvres 
-                  qui capturent l'essence du monde contemporain. Mon travail explore 
-                  les frontières entre l'art traditionnel et les nouvelles formes 
-                  d'expression, notamment à travers le design textile.
-                </p>
-                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  Chaque pièce est unique, qu'il s'agisse d'un tableau original, 
-                  d'un dessin minutieux ou d'une création spécialement conçue 
-                  pour les t-shirts. Mon objectif est de rendre l'art accessible 
-                  tout en préservant son authenticité.
-                </p>
-                <button className="px-8 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-medium">
-                  En savoir plus
-                </button>
-              </div>
-              <div className="aspect-square bg-linear-to-br from-purple-100 to-pink-100 rounded-2xl flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-24 h-24 bg-white rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <svg className="w-12 h-12 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
-                  <p className="text-gray-600 font-medium">Portrait de l'artiste</p>
-                </div>
-              </div>
-            </div>
+    <div className="flex flex-col bg-[#f0f4f8] transition-colors duration-700">
+      {/* Editorial Hero (OBSCURA Inspired) */}
+      <EditorialHero artworks={artworks} />
+
+      {/* Featured Section (Light Theme) */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-12 py-32 md:py-48 w-full border-t border-black/5">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12">
+          <div className="space-y-8 max-w-2xl">
+            <h2 className="font-serif text-4xl md:text-7xl font-bold leading-tight tracking-tighter text-black text-gradient">
+              Pièces <span className="italic font-normal">Sélectionnées</span>
+            </h2>
+            <p className="text-black/40 text-[10px] leading-loose max-w-md tracking-[0.5em] font-black uppercase">
+              Une curation rigoureuse explorant l'équilibre fragile entre la brutalité des textures et la pureté du vide.
+            </p>
           </div>
-        </section>
-      </main>
-      <Footer />
+          <Link href="/galerie" className="px-10 py-5 bg-white border border-black/5 text-[10px] tracking-[0.5em] font-black uppercase rounded-full hover:bg-black hover:text-white transition-all shadow-xl shadow-black/5">
+            Voir Tout Le Catalogue
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {artworks.map((art) => (
+            <Link 
+              key={art._id} 
+              href={`/artwork/${art.slug.current}`} 
+              className="group glass-card rounded-[2.5rem] p-4 flex flex-col items-center justify-center transition-all duration-700 hover:-translate-y-4 hover:shadow-2xl"
+            >
+              <div className="aspect-[4/5] w-full bg-neutral-100 rounded-[2rem] relative overflow-hidden transition-all duration-700 group-hover:scale-[0.98]">
+                 {art.images?.[0] ? (
+                   <Image 
+                    src={urlForImage(art.images[0]).url()} 
+                    alt={art.title} 
+                    fill 
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                   />
+                 ) : (
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(209,176,107,0.1)_0%,_transparent_70%)] flex items-center justify-center">
+                       <span className="text-[10px] tracking-[0.6em] font-black text-black/10 uppercase font-serif italic">Edition</span>
+                    </div>
+                 )}
+              </div>
+              <div className="mt-8 mb-4 w-full px-4 flex justify-between items-center">
+                <div className="space-y-2">
+                   <h3 className="font-serif text-2xl font-bold tracking-tight text-black group-hover:text-primary transition-colors">{art.title}</h3>
+                   <p className="text-[8px] tracking-[0.4em] text-black/30 uppercase font-black">{art.support}</p>
+                </div>
+                <p className="font-serif italic text-lg text-black/60">{art.price} €</p>
+              </div>
+            </Link>
+          ))}
+          {artworks.length === 0 && [1,2,3].map(i => (
+             <div key={i} className="aspect-[3/4] bg-white border border-black/5 rounded-[2.5rem] animate-pulse" />
+          ))}
+        </div>
+      </section>
+
+      {/* Final CTA (Light Theme) */}
+      <section className="py-48 bg-white border-y border-black/5 flex items-center justify-center relative overflow-hidden">
+         <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[80%] h-80 bg-primary/20 blur-[150px] opacity-20 pointer-events-none" />
+         <div className="max-w-4xl mx-auto px-6 text-center z-10">
+            <p className="text-[10px] tracking-[1em] text-black/20 font-black uppercase mb-16">Acquisitions Immédiates</p>
+            <h2 className="font-serif text-6xl md:text-9xl font-bold tracking-tighter mb-20 text-black uppercase leading-none opacity-80">
+                L'ART <br/> <span className="italic font-normal">À VOUS</span>
+            </h2>
+            <Link 
+              href="/galerie" 
+              className="inline-block px-16 py-8 bg-black text-white text-[11px] font-black tracking-[0.5em] uppercase rounded-full hover:bg-primary transition-all duration-700 shadow-2xl shadow-black/20"
+            >
+              Accéder au Catalogue
+            </Link>
+         </div>
+      </section>
     </div>
   );
 }
+
+
