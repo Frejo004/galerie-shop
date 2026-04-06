@@ -18,7 +18,7 @@ export default function SuccessPage() {
         <CheckCircle2 strokeWidth={0.5} className="w-32 h-32 text-primary mx-auto" />
       </div>
       
-      <h1 className="font-serif text-5xl md:text-7xl font-light tracking-tight text-white mb-6 uppercase">
+      <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl font-light tracking-tight text-white mb-6 uppercase">
         Acquisition Confirmée
       </h1>
       

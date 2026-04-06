@@ -40,12 +40,12 @@ export default function ArtworkPresentation({ artwork }: Props) {
   const currentImage = artwork.images?.[selectedImage]
 
   return (
-    <div className="max-w-[1400px] mx-auto px-6 lg:px-12 bg-[#f0f4f8]">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 bg-[#f0f4f8]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-24">
         
         {/* Left Side: Images */}
-        <div className="lg:col-span-8 flex flex-col gap-8">
-          <div className="relative aspect-[4/5] md:aspect-[5/6] bg-white rounded-[3rem] border border-black/5 overflow-hidden group shadow-2xl shadow-black/5">
+        <div className="lg:col-span-8 flex flex-col gap-6 sm:gap-8">
+          <div className="relative aspect-[4/5] sm:aspect-[4/5] md:aspect-[5/6] bg-white rounded-[2rem] sm:rounded-[3rem] border border-black/5 overflow-hidden group shadow-2xl shadow-black/5">
             {currentImage ? (
               <Zoom>
                 <Image
@@ -68,13 +68,13 @@ export default function ArtworkPresentation({ artwork }: Props) {
 
           {/* Thumbnails */}
           {artwork.images?.length > 1 && (
-            <div className="flex gap-4">
+            <div className="flex gap-3 sm:gap-4 flex-wrap">
               {artwork.images.map((img: any, idx: number) => (
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(idx)}
                   className={cn(
-                    "relative w-24 aspect-[4/5] rounded-2xl overflow-hidden border transition-all duration-500",
+                    "relative w-16 sm:w-24 aspect-[4/5] rounded-xl sm:rounded-2xl overflow-hidden border transition-all duration-500",
                     selectedImage === idx ? "border-primary scale-110 shadow-lg" : "border-black/5 opacity-40 hover:opacity-100"
                   )}
                 >
@@ -90,8 +90,8 @@ export default function ArtworkPresentation({ artwork }: Props) {
           )}
 
           {/* Detailed Story Section */}
-          <div className="mt-16 md:mt-24 space-y-12">
-             <div className="border-t border-black/5 pt-16 grid grid-cols-1 md:grid-cols-3 gap-12 text-black/60 uppercase text-[10px] tracking-[0.3em] font-black">
+          <div className="mt-10 md:mt-16 lg:mt-24 space-y-12">
+             <div className="border-t border-black/5 pt-10 md:pt-16 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 text-black/60 uppercase text-[10px] tracking-[0.3em] font-black">
                 <div className="space-y-4">
                   <h4 className="text-primary">Processus</h4>
                   <p className="leading-relaxed opacity-60">
@@ -120,14 +120,14 @@ export default function ArtworkPresentation({ artwork }: Props) {
         </div>
 
         {/* Right Side: Info & Purchase (Sticky) */}
-        <div className="lg:col-span-4 self-start lg:sticky lg:top-32 space-y-12">
+        <div className="lg:col-span-4 self-start lg:sticky lg:top-32 space-y-8 sm:space-y-12">
           
           <div className="space-y-6">
             <div className="flex flex-col gap-2">
               <p className="text-[10px] tracking-[0.5em] uppercase text-black/30 font-black">
                 {artwork.collection || 'Portfolio'} • {artwork.year}
               </p>
-              <h1 className="font-serif text-5xl md:text-7xl font-bold tracking-tighter text-black leading-tight uppercase opacity-80">
+              <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-black leading-tight uppercase opacity-80">
                 {artwork.title}
               </h1>
             </div>

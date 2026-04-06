@@ -63,8 +63,8 @@ export default function RootLayout({
       <body className="font-sans antialiased text-[#f5f5f5] bg-[#0a0a0a]">
         <Header />
         <main>{children}</main>
-        <footer className="mt-32 py-20 border-t border-border/30">
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-start gap-12">
+        <footer className="mt-20 sm:mt-32 py-16 sm:py-20 border-t border-border/30">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex flex-col md:flex-row justify-between items-start gap-10 sm:gap-12">
             <div className="space-y-6 max-w-sm">
               <Link href="/" className="font-serif text-xl tracking-[0.1em] uppercase">GALERIE</Link>
               <p className="text-muted-foreground text-sm leading-relaxed tracking-wide">
@@ -72,7 +72,7 @@ export default function RootLayout({
               </p>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-xs uppercase tracking-widest">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 sm:gap-12 text-xs uppercase tracking-widest">
               <div className="flex flex-col gap-4">
                 <span className="text-white/50 mb-2">Explore</span>
                 <Link href="/galerie" className="hover:text-primary">Galerie</Link>
@@ -92,7 +92,7 @@ export default function RootLayout({
               </div>
             </div>
           </div>
-          <div className="max-w-7xl mx-auto px-6 lg:px-12 mt-20 pt-8 border-t border-white/5 text-[10px] tracking-widest text-white/30 uppercase flex justify-between">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 mt-12 sm:mt-20 pt-8 border-t border-white/5 text-[10px] tracking-widest text-white/30 uppercase flex flex-col sm:flex-row justify-between gap-2">
             <span>© 2024 GALERIE. TOUS DROITS RÉSERVÉS.</span>
             <span>DESIGNED BY ANTIGRAVITY</span>
           </div>

@@ -61,7 +61,7 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
       {/* Drawer */}
       <div 
         className={cn(
-          "fixed top-0 right-0 h-full w-full max-w-md bg-[#0a0a0a] border-l border-white/5 z-[101] transition-transform duration-700 ease-in-out px-8 py-12 flex flex-col",
+          "fixed top-0 right-0 h-full w-full sm:max-w-md bg-[#0a0a0a] border-l border-white/5 z-[101] transition-transform duration-700 ease-in-out px-6 sm:px-8 py-10 sm:py-12 flex flex-col",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >

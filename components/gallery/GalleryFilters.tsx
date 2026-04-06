@@ -22,14 +22,14 @@ export default function GalleryFilters() {
   ]
 
   return (
-    <div className="flex flex-col items-center gap-12 w-full max-w-4xl mx-auto mb-20 px-6">
+    <div className="flex flex-col items-center gap-8 sm:gap-12 w-full max-w-4xl mx-auto mb-16 sm:mb-20 px-4 sm:px-6">
       
       {/* Search Input */}
       <div className="relative w-full max-w-md group">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/20 group-focus-within:text-primary transition-colors" />
         <input 
           type="text" 
-          placeholder="RECHERCHER UNE ŒUVRE, UN SUPPORT..."
+          placeholder="RECHERCHER..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full bg-white/5 border border-white/10 py-4 pl-12 pr-12 text-[10px] tracking-[0.2em] font-medium text-white placeholder:text-white/20 focus:outline-none focus:border-primary/50 focus:bg-white/[0.07] transition-all uppercase"

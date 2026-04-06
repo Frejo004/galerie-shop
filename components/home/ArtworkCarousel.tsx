@@ -27,7 +27,7 @@ export default function ArtworkCarousel({ artworks }: Props) {
   return (
     <div className="w-full flex flex-col items-center">
       {/* Carousel Wrapper */}
-      <div className="relative w-full h-[500px] flex items-center justify-center overflow-hidden px-4 md:px-0">
+      <div className="relative w-full h-[380px] sm:h-[440px] md:h-[500px] flex items-center justify-center overflow-hidden px-4">
         <AnimatePresence mode="popLayout">
           {[-2, -1, 0, 1, 2].map((offset) => {
             const artIndex = getIndex(offset)
@@ -36,23 +36,22 @@ export default function ArtworkCarousel({ artworks }: Props) {
 
             const isActive = offset === 0
             const isNear = Math.abs(offset) === 1
-            const isFar = Math.abs(offset) === 2
 
             return (
               <motion.div
                 key={`${art._id}-${offset}`}
-                initial={{ opacity: 0, x: offset * 200, scale: 0.5 }}
+                initial={{ opacity: 0, x: offset * 100, scale: 0.5 }}
                 animate={{
-                  opacity: isActive ? 1 : isNear ? 0.4 : 0.1,
-                  x: offset * (isActive ? 0 : isNear ? 350 : 550),
-                  scale: isActive ? 1 : isNear ? 0.75 : 0.5,
+                  opacity: isActive ? 1 : isNear ? 0.35 : 0,
+                  x: offset * (isActive ? 0 : isNear ? 220 : 400),
+                  scale: isActive ? 1 : isNear ? 0.72 : 0.5,
                   zIndex: 10 - Math.abs(offset),
-                  rotateY: offset * 25,
+                  rotateY: offset * 20,
                   filter: isActive ? 'blur(0px)' : 'blur(2px)',
                 }}
                 exit={{ opacity: 0, scale: 0.5 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-                className="absolute w-[300px] md:w-[450px] aspect-[4/5] md:aspect-square rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-white shadow-2xl border border-white/20 cursor-pointer"
+                className="absolute w-[220px] sm:w-[280px] md:w-[380px] lg:w-[450px] aspect-[4/5] rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-white shadow-2xl border border-white/20 cursor-pointer"
                 onClick={() => {
                    if (offset === 1) next()
                    if (offset === -1) prev()
@@ -83,14 +82,14 @@ export default function ArtworkCarousel({ artworks }: Props) {
       </div>
 
       {/* Info & Controls */}
-      <div className="mt-12 text-center space-y-6 max-w-lg px-6">
+      <div className="mt-8 md:mt-12 text-center space-y-6 max-w-lg px-6 w-full">
         <motion.div
           key={activeArt._id}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           className="space-y-4"
         >
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-black">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight text-black">
             {activeArt.title}
           </h2>
           <div className="flex flex-col gap-2">

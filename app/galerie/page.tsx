@@ -55,11 +55,11 @@ export default async function GaleriePage() {
   const artworks = await getArtworks()
 
   return (
-    <div className="pt-32 pb-40 max-w-7xl mx-auto px-6 lg:px-12 relative">
+    <div className="pt-32 pb-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-[radial-gradient(circle_at_center,_rgba(209,176,107,0.03)_0%,_transparent_70%)] pointer-events-none -z-10" />
       
-      <div className="flex flex-col items-center mb-16 text-center">
-        <h1 className="font-serif text-5xl md:text-8xl font-light tracking-[-0.05em] text-white uppercase mb-8 leading-none">
+      <div className="flex flex-col items-center mb-12 sm:mb-16 text-center">
+        <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-[-0.05em] text-white uppercase mb-6 sm:mb-8 leading-none">
           LA <span className="italic font-normal text-primary">GALERIE</span>
         </h1>
         <p className="max-w-2xl text-muted-foreground text-[10px] uppercase tracking-[0.5em] leading-relaxed opacity-50">

@@ -18,12 +18,12 @@ export default function EditorialHero({ artworks }: Props) {
       </div>
 
       {/* Main Title Background */}
-      <div className="relative w-full text-center mb-[-5vw] z-0">
+      <div className="relative w-full text-center mb-[-3vw] sm:mb-[-4vw] md:mb-[-5vw] z-0">
         <motion.h1 
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 2, ease: "easeOut" }}
-          className="text-[28vw] font-bold tracking-tighter leading-none text-black/[0.04] select-none"
+          className="text-[22vw] sm:text-[26vw] md:text-[28vw] font-bold tracking-tighter leading-none text-black/[0.04] select-none"
         >
           GALERIE
         </motion.h1>

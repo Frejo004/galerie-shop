@@ -142,11 +142,11 @@ export default async function Home() {
       </section>
 
       {/* Final CTA (Light Theme) */}
-      <section className="py-48 bg-white border-y border-black/5 flex items-center justify-center relative overflow-hidden">
+      <section className="py-24 sm:py-32 md:py-48 bg-white border-y border-black/5 flex items-center justify-center relative overflow-hidden">
          <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[80%] h-80 bg-primary/20 blur-[150px] opacity-20 pointer-events-none" />
          <div className="max-w-4xl mx-auto px-6 text-center z-10">
-            <p className="text-[10px] tracking-[1em] text-black/20 font-black uppercase mb-16">Acquisitions Immédiates</p>
-            <h2 className="font-serif text-6xl md:text-9xl font-bold tracking-tighter mb-20 text-black uppercase leading-none opacity-80">
+            <p className="text-[10px] tracking-[1em] text-black/20 font-black uppercase mb-10 sm:mb-16">Acquisitions Immédiates</p>
+            <h2 className="font-serif text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter mb-12 sm:mb-20 text-black uppercase leading-none opacity-80">
                 L'ART <br/> <span className="italic font-normal">À VOUS</span>
             </h2>
             <Link 

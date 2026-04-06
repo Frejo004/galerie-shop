@@ -38,9 +38,9 @@ export default async function BlogPage() {
   const posts = await getPosts()
 
   return (
-    <div className="pt-32 pb-40 max-w-7xl mx-auto px-6 lg:px-12">
-      <div className="flex flex-col items-center mb-32 text-center">
-        <h1 className="font-serif text-5xl md:text-8xl font-light tracking-tight text-white uppercase mb-8">
+    <div className="pt-32 pb-40 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+      <div className="flex flex-col items-center mb-20 sm:mb-32 text-center">
+        <h1 className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-tight text-white uppercase mb-6 sm:mb-8">
           LES <span className="italic">STORIES</span>
         </h1>
         <p className="max-w-2xl text-muted-foreground text-[10px] uppercase tracking-[0.5em] leading-relaxed opacity-50">
