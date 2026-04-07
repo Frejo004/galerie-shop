@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Check } from "lucide-react"
 import { client } from "@/sanity/lib/client"
 import { groq } from "next-sanity"
 import { urlForImage } from "@/sanity/lib/image"
@@ -30,7 +30,7 @@ async function getFeaturedArtworks(): Promise<Artwork[]> {
   try {
     const data = await client.fetch(
       groq`*[_type == "artwork" && inStock == true][0...3] | order(_createdAt desc) {
-        _id, title, slug, type, support, price, currency, images
+        _id, title, slug, type, support, year, price, currency, images
       }`
     )
     return data?.length > 0 ? data : MOCK_ARTWORKS
@@ -39,89 +39,106 @@ async function getFeaturedArtworks(): Promise<Artwork[]> {
   }
 }
 
+const FEATURES = [
+  { label: 'Pièces uniques', desc: 'Chaque œuvre est sélectionnée pour son unicité et sa qualité.' },
+  { label: 'Tirages Fine Art', desc: 'Éditions limitées sur papier museum, signées par l\'artiste.' },
+  { label: 'Livraison sécurisée', desc: 'Emballage professionnel avec assurance transport incluse.' },
+]
+
 export default async function Home() {
   const artworks = await getFeaturedArtworks()
 
   return (
     <div className="flex flex-col">
 
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <EditorialHero artworks={artworks} />
+      <EditorialHero />
 
-      {/* ── Sélection ────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-24 sm:py-32 w-full">
-
-        {/* En-tête section */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8 mb-16">
-          <div className="space-y-4">
-            <span className="label-category">Sélection</span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-foreground">
-              Pièces <em>choisies</em>
+      {/* Section sombre encadrée — style Scalar */}
+      <section className="px-4 sm:px-6 lg:px-8 pb-16">
+        <div className="max-w-7xl mx-auto dark-section px-6 sm:px-10 py-16 sm:py-20">
+          <div className="text-center mb-12">
+            <span className="label-category text-white/40 block mb-3">Notre approche</span>
+            <h2 className="font-sans text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+              L'art, <em className="font-serif font-normal italic">simplement</em>
             </h2>
           </div>
-          <Link href="/galerie" className="btn-outline self-start sm:self-auto whitespace-nowrap">
-            Voir le catalogue
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            {FEATURES.map((f) => (
+              <div key={f.label} className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Check className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="font-semibold text-white text-sm">{f.label}</span>
+                </div>
+                <p className="text-sm text-white/50 leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sélection d'œuvres */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 w-full">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+          <div>
+            <span className="label-category block mb-2">Sélection</span>
+            <h2 className="font-sans text-3xl sm:text-4xl font-bold tracking-tight">
+              Pièces <em className="font-serif font-normal italic text-primary">choisies</em>
+            </h2>
+          </div>
+          <Link href="/galerie" className="btn-ghost self-start sm:self-auto">
+            Voir tout <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
-        {/* Grille œuvres */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px bg-border">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           {artworks.map((art) => (
-            <Link
-              key={art._id}
-              href={`/artwork/${art.slug.current}`}
-              className="artwork-card group bg-card block"
-            >
+            <Link key={art._id} href={`/artwork/${art.slug.current}`} className="artwork-card group block">
               <div className="aspect-[3/4] relative overflow-hidden bg-muted">
                 {art.images?.[0] ? (
-                  <Image
-                    src={urlForImage(art.images[0]).url()}
-                    alt={art.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
+                  <Image src={urlForImage(art.images[0]).url()} alt={art.title} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-serif italic text-sm text-muted-foreground/40">
-                      {art.year}
-                    </span>
+                    <span className="font-serif italic text-muted-foreground/30">{art.year}</span>
                   </div>
                 )}
               </div>
-
-              <div className="p-6 flex justify-between items-start">
-                <div className="space-y-1">
-                  <h3 className="font-serif text-lg font-light text-foreground group-hover:text-primary transition-colors">
-                    {art.title}
-                  </h3>
-                  <p className="text-xs text-muted-foreground tracking-wide">{art.support}</p>
+              <div className="p-5">
+                <div className="flex justify-between items-start gap-3">
+                  <div>
+                    <h3 className="font-semibold text-sm text-foreground group-hover:text-primary transition-colors">{art.title}</h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">{art.support}</p>
+                  </div>
+                  <span className="text-sm font-medium text-foreground shrink-0">
+                    {art.price.toLocaleString('fr-FR')} {art.currency}
+                  </span>
                 </div>
-                <p className="font-serif text-base text-muted-foreground shrink-0 ml-4">
-                  {art.price.toLocaleString('fr-FR')} {art.currency}
-                </p>
+                <div className="mt-3 flex gap-2">
+                  <span className="tag-pill">{art.type === 'original' ? 'Pièce unique' : 'Édition limitée'}</span>
+                </div>
               </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ── Séparateur éditorial ──────────────────────────────── */}
-      <div className="border-t border-border" />
-
-      {/* ── CTA final ────────────────────────────────────────── */}
-      <section className="py-24 sm:py-36 px-4 sm:px-6 flex flex-col items-center text-center gap-10">
-        <div className="space-y-3 max-w-xl">
-          <span className="label-category">Acquisitions</span>
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-light tracking-tight text-foreground">
-            Chaque œuvre<br />
-            <em>attend son collectionneur</em>
-          </h2>
+      {/* CTA final */}
+      <section className="px-4 sm:px-6 lg:px-8 pb-24">
+        <div className="max-w-7xl mx-auto">
+          <div className="dark-section px-6 sm:px-16 py-16 sm:py-20 flex flex-col sm:flex-row items-center justify-between gap-8">
+            <div className="space-y-3 max-w-lg">
+              <span className="label-category text-white/40 block">Acquisitions</span>
+              <h2 className="font-sans text-3xl sm:text-4xl font-bold text-white leading-tight">
+                Chaque œuvre attend<br />
+                <em className="font-serif font-normal italic text-primary">son collectionneur</em>
+              </h2>
+            </div>
+            <Link href="/galerie" className="btn-primary shrink-0 text-base px-6 py-3">
+              Accéder au catalogue <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
         </div>
-        <div className="divider" />
-        <Link href="/galerie" className="btn-primary">
-          Accéder au catalogue <ArrowRight className="w-4 h-4" />
-        </Link>
       </section>
 
     </div>

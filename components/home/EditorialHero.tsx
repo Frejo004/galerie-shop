@@ -1,58 +1,81 @@
 'use client'
 
-import React from 'react'
 import { motion } from 'framer-motion'
-import ArtworkCarousel from './ArtworkCarousel'
-import { ArrowDown } from 'lucide-react'
+import Link from 'next/link'
+import { ArrowRight } from 'lucide-react'
 
-interface Props {
-  artworks: any[]
-}
-
-export default function EditorialHero({ artworks }: Props) {
+export default function EditorialHero() {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pt-20 pb-16 overflow-hidden bg-background">
+    <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-24 pb-16 overflow-hidden">
 
-      {/* Ligne décorative verticale */}
-      <div className="absolute left-6 sm:left-12 top-1/2 -translate-y-1/2 h-32 w-px bg-border hidden lg:block" />
+      {/* Glow décoratif bas */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-[200px] h-[200px] bg-violet-400/15 blur-[80px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 w-full">
+      <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center gap-6">
 
-        {/* Titre éditorial */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
+        {/* Label */}
+        <motion.span
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-12 sm:mb-16 max-w-2xl"
+          transition={{ duration: 0.5 }}
+          className="label-category animate-fade-up"
         >
-          <span className="label-category block mb-4">Collection 2024</span>
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.1] tracking-tight text-foreground">
-            L'art comme<br />
-            <em className="text-primary">langage premier</em>
-          </h1>
-          <div className="divider mt-8" />
+          Galerie d'art contemporain
+        </motion.span>
+
+        {/* Titre */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="font-sans text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[1.05] tracking-tight text-foreground"
+        >
+          L'art qui{' '}
+          <em className="font-serif font-normal italic text-primary not-italic" style={{ fontStyle: 'italic' }}>
+            vous touche
+          </em>
+          .{' '}
+          <br className="hidden sm:block" />
+          Directement chez vous.
+        </motion.h1>
+
+        {/* Sous-titre */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="max-w-xl text-base sm:text-lg text-muted-foreground leading-relaxed"
+        >
+          Nous sélectionnons des œuvres originales et des tirages d'art de qualité muséale —
+          pour les collectionneurs qui savent ce qu'ils cherchent.
+        </motion.p>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="flex flex-col sm:flex-row items-center gap-3 mt-2"
+        >
+          <Link href="/galerie" className="btn-primary text-base px-6 py-3">
+            Explorer la galerie <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link href="/about" className="btn-ghost text-base px-6 py-3">
+            Notre approche
+          </Link>
         </motion.div>
 
-        {/* Carousel */}
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        {/* Social proof */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="text-xs text-muted-foreground mt-2"
         >
-          <ArtworkCarousel artworks={artworks} />
-        </motion.div>
+          Œuvres authentifiées · Livraison sécurisée · Certificat d'authenticité inclus
+        </motion.p>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted-foreground"
-      >
-        <span className="text-[10px] tracking-[0.2em] uppercase">Défiler</span>
-        <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
-      </motion.div>
     </section>
   )
 }

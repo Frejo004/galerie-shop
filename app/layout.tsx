@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-import { ShoppingBag, Menu, X } from "lucide-react";
 import Header from "@/components/layout/Header";
+
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -63,38 +63,33 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <Header />
         <main>{children}</main>
-        <footer className="mt-20 sm:mt-32 border-t border-border">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-16 sm:py-20 flex flex-col md:flex-row justify-between items-start gap-12">
-            <div className="space-y-5 max-w-xs">
-              <Link href="/" className="font-serif text-2xl tracking-[0.08em] text-foreground">GALERIE</Link>
-              <div className="divider" />
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                Une vision artistique contemporaine,<br />mêlant émotion brute et raffinement.
-              </p>
+        <footer className="border-t border-border mt-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row justify-between items-start gap-10">
+            <div className="space-y-3 max-w-xs">
+              <Link href="/" className="font-sans font-bold text-lg text-foreground">GALERIE</Link>
+              <p className="text-sm text-muted-foreground leading-relaxed">Une sélection d'œuvres contemporaines pour les collectionneurs exigeants.</p>
             </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 sm:gap-16">
-              <div className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+              <div className="flex flex-col gap-2.5">
                 <span className="label-category mb-1">Explorer</span>
                 <Link href="/galerie" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Galerie</Link>
                 <Link href="/collections" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Collections</Link>
                 <Link href="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Journal</Link>
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2.5">
                 <span className="label-category mb-1">Contact</span>
                 <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Demande</Link>
                 <Link href="/shipping" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Livraison</Link>
                 <Link href="/legal" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Mentions légales</Link>
               </div>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2.5">
                 <span className="label-category mb-1">Suivre</span>
                 <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Instagram</a>
                 <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Vimeo</a>
               </div>
             </div>
           </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-6 border-t border-border flex flex-col sm:flex-row justify-between gap-2 text-xs text-muted-foreground">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 border-t border-border flex flex-col sm:flex-row justify-between gap-2 text-xs text-muted-foreground">
             <span>© 2024 GALERIE. Tous droits réservés.</span>
             <span>Designed by Antigravity</span>
           </div>
