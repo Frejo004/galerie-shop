@@ -1,16 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import type { CartItem } from './types'
 
-export interface CartItem {
-  id: string
-  title: string
-  price: number
-  currency: string
-  image?: string
-  quantity: number
-  type: 'original' | 'derivative'
-  support?: string
-}
+export type { CartItem }
 
 interface CartStore {
   items: CartItem[]

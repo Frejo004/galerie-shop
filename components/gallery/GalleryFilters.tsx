@@ -18,6 +18,7 @@ const SUPPORTS: { label: string; value: SupportFilter }[] = [
   { label: 'Acrylique', value: 'acrylique' },
   { label: 'Technique mixte', value: 'mixte' },
   { label: 'Fine Art', value: 'papier' },
+  { label: 'Numérique', value: 'numerique' },
 ]
 
 export default function GalleryFilters() {

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import CustomCursor from "@/components/ui/CustomCursor";
 import RevealObserver from "@/components/ui/RevealObserver";
+import { ToastProvider } from "@/components/ui/ToastProvider";
 import { ArrowUpRight } from "lucide-react";
 
 const cormorant = Cormorant_Garamond({
@@ -83,6 +84,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className={`${cormorant.variable} ${inter.variable}`}>
       <body className="font-sans antialiased">
+        <ToastProvider>
         <CustomCursor />
         <RevealObserver />
         <Header />
@@ -160,6 +162,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        </ToastProvider>
       </body>
     </html>
   );

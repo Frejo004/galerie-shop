@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { X, ShoppingBag, Trash2, ArrowRight, Loader2 } from 'lucide-react'
 import { useCart } from '@/lib/cart-store'
 import { cn } from '@/lib/utils'
+import { useToast } from '@/components/ui/ToastProvider'
 
 interface Props {
   isOpen: boolean
@@ -14,6 +15,7 @@ interface Props {
 export default function CartDrawer({ isOpen, onClose }: Props) {
   const { items, removeItem, totalPrice } = useCart()
   const [isCheckingOut, setIsCheckingOut] = useState(false)
+  const { toast } = useToast()
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : ''
@@ -32,10 +34,15 @@ export default function CartDrawer({ isOpen, onClose }: Props) {
           cancelUrl: window.location.href,
         }),
       })
-      const { url } = await response.json()
-      if (url) window.location.href = url
-    } catch {
-      alert('Une erreur est survenue lors du paiement.')
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Erreur inconnue')
+      if (data.url) window.location.href = data.url
+    } catch (err) {
+      toast({
+        title: 'Erreur de paiement',
+        description: err instanceof Error ? err.message : 'Une erreur est survenue. Veuillez réessayer.',
+        variant: 'error',
+      })
     } finally {
       setIsCheckingOut(false)
     }

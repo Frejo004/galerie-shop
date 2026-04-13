@@ -6,36 +6,28 @@ import { groq } from "next-sanity"
 import { urlForImage } from "@/sanity/lib/image"
 import { projectId } from "@/sanity/env"
 import EditorialHero from "@/components/home/EditorialHero"
+import type { Artwork } from "@/lib/types"
+import { MOCK_ARTWORKS } from "@/lib/mock-data"
 
-interface Artwork {
-  _id: string
-  title: string
-  slug: { current: string }
-  type: 'original' | 'derivative'
-  support: string
-  year: string
-  price: number
-  currency: string
-  images: any[]
+const SUPPORT_LABELS: Record<string, string> = {
+  huile: 'Huile sur toile',
+  acrylique: 'Acrylique sur toile',
+  mixte: 'Technique mixte',
+  papier: 'Papier Fine Art',
+  numerique: 'Numérique',
 }
 
-const MOCK_ARTWORKS: Artwork[] = [
-  { _id: 'mock1', title: 'Éveil du Silence No. 1',  slug: { current: 'mock-1' }, type: 'original',    support: 'Huile sur Toile',    year: '2024', price: 4200, currency: '€', images: [] },
-  { _id: 'mock2', title: 'Texture Urbaine',          slug: { current: 'mock-2' }, type: 'derivative', support: 'Tirage Fine Art',    year: '2023', price: 350,  currency: '€', images: [] },
-  { _id: 'mock3', title: 'Fragment de Mémoire',      slug: { current: 'mock-3' }, type: 'original',    support: 'Technique Mixte',   year: '2024', price: 2800, currency: '€', images: [] },
-]
-
 async function getFeaturedArtworks(): Promise<Artwork[]> {
-  if (projectId === 'dummy-project-id') return MOCK_ARTWORKS
+  if (projectId === 'dummy-project-id') return MOCK_ARTWORKS.slice(0, 3)
   try {
     const data = await client.fetch(
       groq`*[_type == "artwork" && inStock == true][0...3] | order(_createdAt desc) {
         _id, title, slug, type, support, year, price, currency, images
       }`
     )
-    return data?.length > 0 ? data : MOCK_ARTWORKS
+    return data?.length > 0 ? data : MOCK_ARTWORKS.slice(0, 3)
   } catch {
-    return MOCK_ARTWORKS
+    return MOCK_ARTWORKS.slice(0, 3)
   }
 }
 
@@ -132,7 +124,7 @@ export default async function Home() {
                     <h3 className="font-serif font-light text-base text-[hsl(24,10%,8%)] group-hover:text-[hsl(28,90%,50%)] transition-colors">
                       {art.title}
                     </h3>
-                    <p className="text-[0.7rem] text-[hsl(24,5%,52%)] mt-0.5 tracking-wide">{art.support}</p>
+                    <p className="text-[0.7rem] text-[hsl(24,5%,52%)] mt-0.5 tracking-wide">{SUPPORT_LABELS[art.support] ?? art.support}</p>
                   </div>
                   <span className="text-sm font-medium text-[hsl(24,10%,8%)] shrink-0">
                     {art.price.toLocaleString('fr-FR')} {art.currency}

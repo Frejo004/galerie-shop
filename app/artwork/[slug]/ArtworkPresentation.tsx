@@ -11,9 +11,18 @@ import { Check, ShoppingBag, Mail, ArrowLeft, ZoomIn } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import type { Artwork } from '@/lib/types'
+
+const SUPPORT_LABELS: Record<string, string> = {
+  huile: 'Huile sur toile',
+  acrylique: 'Acrylique sur toile',
+  mixte: 'Technique mixte',
+  papier: 'Papier Fine Art',
+  numerique: 'Numérique',
+}
 
 interface Props {
-  artwork: any
+  artwork: Artwork & { collection?: string; story?: unknown[] }
 }
 
 export default function ArtworkPresentation({ artwork }: Props) {
@@ -176,7 +185,7 @@ export default function ArtworkPresentation({ artwork }: Props) {
             <div className="space-y-0 divide-y divide-[hsl(40,8%,88%)]">
               {[
                 { label: 'Type',          value: artwork.type === 'original' ? 'Pièce unique' : 'Édition limitée' },
-                { label: 'Support',       value: artwork.support },
+                { label: 'Support',       value: SUPPORT_LABELS[artwork.support] ?? artwork.support },
                 { label: 'Format',        value: artwork.format || '—' },
                 {
                   label: 'Disponibilité',

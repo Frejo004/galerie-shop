@@ -3,22 +3,15 @@ import { groq } from 'next-sanity'
 import MasonryGrid from '@/components/gallery/MasonryGrid'
 import GalleryFilters from '@/components/gallery/GalleryFilters'
 import { projectId } from '@/sanity/env'
+import { MOCK_ARTWORKS } from '@/lib/mock-data'
+import type { Artwork } from '@/lib/types'
 
 export const metadata = {
   title: 'Galerie · Œuvres originales et tirages',
   description: 'Explorez la collection complète d\'œuvres de la GALERIE.',
 }
 
-const MOCK_ARTWORKS = [
-  { _id: 'mock1', title: 'Éveil du Silence No. 1', slug: { current: 'mock-1' }, type: 'original',    support: 'Huile sur Toile',         year: '2024', price: 4200, currency: '€', images: [] },
-  { _id: 'mock2', title: 'Texture Urbaine',         slug: { current: 'mock-2' }, type: 'derivative', support: 'Tirage Fine Art',         year: '2023', price: 350,  currency: '€', images: [] },
-  { _id: 'mock3', title: 'Fragment de Mémoire',     slug: { current: 'mock-3' }, type: 'original',    support: 'Technique Mixte',        year: '2024', price: 2800, currency: '€', images: [] },
-  { _id: 'mock4', title: 'Silence Éphémère',        slug: { current: 'mock-4' }, type: 'original',    support: 'Acrylique sur Toile',    year: '2024', price: 3100, currency: '€', images: [] },
-  { _id: 'mock5', title: 'Lumière Intérieure',      slug: { current: 'mock-5' }, type: 'derivative', support: 'Tirage Fine Art',         year: '2023', price: 420,  currency: '€', images: [] },
-  { _id: 'mock6', title: 'Géographie du Vide',      slug: { current: 'mock-6' }, type: 'original',    support: 'Huile sur Toile',         year: '2023', price: 5800, currency: '€', images: [] },
-]
-
-async function getArtworks() {
+async function getArtworks(): Promise<Artwork[]> {
   if (projectId === 'dummy-project-id') return MOCK_ARTWORKS
   try {
     const data = await client.fetch(

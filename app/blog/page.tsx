@@ -3,18 +3,15 @@ import { groq } from 'next-sanity'
 import Link from 'next/link'
 import { ArrowRight, Calendar } from 'lucide-react'
 import { projectId } from '@/sanity/env'
+import { MOCK_POSTS } from '@/lib/mock-data'
+import type { Post } from '@/lib/types'
 
 export const metadata = {
   title: 'Journal · Stories & Réflexions',
   description: 'Réflexions sur l\'art, le processus créatif et l\'esthétique du vide.',
 }
 
-const MOCK_POSTS = [
-  { _id: 'p1', title: 'Le Silence comme Matière', slug: { current: 'silence' }, publishedAt: new Date().toISOString(), tags: ['PHILOSOPHIE'], author: 'L\'Artiste', teaser: 'Une exploration du silence comme composante plastique fondamentale de l\'œuvre contemporaine.' },
-  { _id: 'p2', title: 'L\'Émotion face au Vide',  slug: { current: 'vide' },    publishedAt: new Date().toISOString(), tags: ['PROCESSUS'],   author: 'L\'Artiste', teaser: 'Comment le vide devient matière et la matière s\'efface dans l\'espace de la contemplation.' },
-]
-
-async function getPosts() {
+async function getPosts(): Promise<Post[]> {
   if (projectId === 'dummy-project-id') return MOCK_POSTS
   try {
     return await client.fetch(
@@ -56,7 +53,7 @@ export default async function BlogPage() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-20">
-          {posts.map((post: any, i: number) => (
+          {posts.map((post: Post, i: number) => (
             <Link
               key={post._id}
               href={`/blog/${post.slug.current}`}

@@ -1,24 +1,18 @@
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 import { urlForImage } from '@/sanity/lib/image'
-import Image from 'next/image'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import ArtworkPresentation from './ArtworkPresentation'
 import { projectId } from '@/sanity/env'
+import { MOCK_ARTWORK_DETAIL } from '@/lib/mock-data'
+import type { Artwork } from '@/lib/types'
 
-interface Props {
-  params: { slug: string }
-}
+type Props = { params: Promise<{ slug: string }> }
 
-const MOCK_DATA: Record<string, any> = {
-  'mock-1': { _id: 'mock1', title: 'Éveil du Silence No. 1', slug: { current: 'mock-1' }, year: '2024', type: 'original', support: 'Huile sur Toile', price: 4200, currency: '€', images: [], inStock: true },
-  'mock-2': { _id: 'mock2', title: 'Texture Urbaine (Étude)', slug: { current: 'mock-2' }, year: '2023', type: 'derivative', support: 'Tirage Fine Art', price: 350, currency: '€', images: [], inStock: true },
-}
-
-async function getArtwork(slug: string) {
+async function getArtwork(slug: string): Promise<Artwork | null> {
   if (projectId === 'dummy-project-id' || slug.startsWith('mock-')) {
-     return MOCK_DATA[slug] || MOCK_DATA['mock-1'];
+    return MOCK_ARTWORK_DETAIL[slug] ?? MOCK_ARTWORK_DETAIL['mock-1']
   }
 
   try {
@@ -48,22 +42,24 @@ async function getArtwork(slug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const artwork = await getArtwork(params.slug)
+  const { slug } = await params
+  const artwork = await getArtwork(slug)
   if (!artwork) return {}
 
-  const imageUrl = artwork.images?.[0] ? urlForImage(artwork.images[0]).width(1200).height(630).url() : ''
+  const imageUrl = artwork.images?.[0]
+    ? urlForImage(artwork.images[0]).width(1200).height(630).url()
+    : ''
 
   return {
     title: `${artwork.title} (${artwork.year})`,
-    description: `Oeuvre d'art : ${artwork.title}. Support : ${artwork.support}. Par GALERIE.`,
-    openGraph: {
-      images: imageUrl ? [imageUrl] : [],
-    },
+    description: `Oeuvre d'art : ${artwork.title}. Support : ${artwork.support}. Par GALERIE.`,
+    openGraph: { images: imageUrl ? [imageUrl] : [] },
   }
 }
 
 export default async function ArtworkPage({ params }: Props) {
-  const artwork = await getArtwork(params.slug)
+  const { slug } = await params
+  const artwork = await getArtwork(slug)
   if (!artwork) notFound()
 
   return (

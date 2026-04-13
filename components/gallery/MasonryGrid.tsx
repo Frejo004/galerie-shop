@@ -7,9 +7,18 @@ import { urlForImage } from '@/sanity/lib/image'
 import { useFilter } from '@/lib/filter-store'
 import { motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
+import type { Artwork } from '@/lib/types'
+
+const SUPPORT_LABELS: Record<string, string> = {
+  huile: 'Huile sur toile',
+  acrylique: 'Acrylique sur toile',
+  mixte: 'Technique mixte',
+  papier: 'Papier Fine Art',
+  numerique: 'Numérique',
+}
 
 interface Props {
-  artworks: any[]
+  artworks: Artwork[]
 }
 
 const breakpointCols = { default: 3, 1100: 2, 640: 1 }
@@ -118,7 +127,7 @@ export default function MasonryGrid({ artworks }: Props) {
                   {art.title}
                 </h3>
                 <p className="text-[0.7rem] text-[hsl(24,5%,52%)] tracking-wide">
-                  {art.support} · {art.year}
+                  {SUPPORT_LABELS[art.support] ?? art.support} · {art.year}
                 </p>
               </div>
               <p className="text-sm font-medium text-[hsl(24,10%,8%)] shrink-0 ml-4">

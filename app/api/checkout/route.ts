@@ -1,14 +1,18 @@
 import { NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe'
+import type { CartItem } from '@/lib/types'
 
-interface CartItem {
-  id: string
-  title: string
-  price: number
-  currency: string
-  image?: string
-  quantity: number
-  support?: string
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? ''
+
+function safeRedirectUrl(url: string | undefined, fallback: string): string {
+  if (!url || !BASE_URL) return fallback
+  try {
+    const parsed = new URL(url)
+    const base = new URL(BASE_URL)
+    return parsed.origin === base.origin ? url : fallback
+  } catch {
+    return fallback
+  }
 }
 
 export async function POST(req: Request) {
@@ -32,11 +36,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid item data' }, { status: 400 })
     }
 
+    const safeSuccessUrl = safeRedirectUrl(
+      successUrl,
+      `${BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`
+    )
+    const safeCancelUrl = safeRedirectUrl(cancelUrl, `${BASE_URL}/galerie`)
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: items.map((item: CartItem) => ({
         price_data: {
-          currency: item.currency || 'eur',
+          currency: item.currency?.toLowerCase() || 'eur',
           product_data: {
             name: item.title,
             images: item.image ? [item.image] : [],
@@ -44,11 +54,11 @@ export async function POST(req: Request) {
           },
           unit_amount: Math.round(item.price * 100),
         },
-        quantity: item.quantity || 1,
+        quantity: item.quantity,
       })),
       mode: 'payment',
-      success_url: successUrl || `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl || `${process.env.NEXT_PUBLIC_BASE_URL}/cart`,
+      success_url: safeSuccessUrl,
+      cancel_url: safeCancelUrl,
       metadata: {
         itemIds: items.map((i: CartItem) => i.id).join(','),
       },
